@@ -1,7 +1,7 @@
 # The app itself
 -e .
 
-Django>=5
+Django>=3.2
 mock
 psycopg2-binary
 

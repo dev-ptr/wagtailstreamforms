@@ -18,12 +18,21 @@ tests_require = [
     "flake8-debugger==3.1.0",
 ]
 
+try:
+    import wagtail
+
+    wagtail_version = wagtail.VERSION
+    if wagtail_version >= (6, 0):
+        wagtail_extra = ["wagtail-modeladmin"]
+    else:
+        wagtail_extra = ["wagtail-generic-chooser>=0.5.0,<0.7"]
+except ImportError:
+    wagtail_extra = ["wagtail-generic-chooser>=0.5.0,<0.7"]
 
 install_requires = [
     "wagtail>4.1,<=6.3",
     "Unidecode>=0.04.14,<2.0",
-    "wagtail-modeladmin",
-]
+] + wagtail_extra
 
 documentation_extras = [
     "sphinxcontrib-spelling>=2.3.0",
