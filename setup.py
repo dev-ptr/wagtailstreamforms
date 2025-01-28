@@ -22,7 +22,7 @@ try:
     import wagtail
 
     wagtail_version = wagtail.VERSION
-    if wagtail_version >= (6, 0):
+    if wagtail_version >= (5, 0):
         wagtail_extra = ["wagtail-modeladmin"]
     else:
         wagtail_extra = ["wagtail-generic-chooser>=0.5.0,<0.7"]

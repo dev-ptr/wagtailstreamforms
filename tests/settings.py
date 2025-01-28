@@ -5,6 +5,19 @@ from django.urls import reverse_lazy
 
 SECRET_KEY = "secret"
 
+# Detect Wagtail version
+try:
+    import wagtail
+
+    wagtail_version = wagtail.VERSION
+    if wagtail_version >= (5, 0):
+        wagtail_extra_apps = ["wagtail_modeladmin"]
+    else:
+        wagtail_extra_apps = ["generic_chooser"]
+except ImportError:
+    wagtail_extra_apps = []  # Default to an empty list if Wagtail isn't installed
+
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -25,12 +38,11 @@ INSTALLED_APPS = [
     "wagtail.contrib.redirects",
     "wagtail.contrib.forms",
     "wagtail.sites",
-    "wagtail_modeladmin",
     "wagtail.contrib.settings",
     "taggit",
     "wagtailstreamforms",
     "tests",
-]
+] + wagtail_extra_apps
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -43,8 +55,12 @@ MIDDLEWARE = [
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
 ]
 
-DJANGO_VERSION = int(re.search("dj([0-9]+)", os.environ.get("TOX_ENV_NAME", "dj40")).group(1))
-WAGTAIL_VERSION = int(re.search("wt([0-9]+)", os.environ.get("TOX_ENV_NAME", "wt216")).group(1))
+DJANGO_VERSION = int(
+    re.search("dj([0-9]+)", os.environ.get("TOX_ENV_NAME", "dj40")).group(1)
+)
+WAGTAIL_VERSION = int(
+    re.search("wt([0-9]+)", os.environ.get("TOX_ENV_NAME", "wt216")).group(1)
+)
 
 DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": "testdb"}}
 
